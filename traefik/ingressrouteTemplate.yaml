@@ -1,0 +1,27 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: loki-grafana
+  namespace: default
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.grafana.local.anundsson.net`)
+      kind: Rule
+      services:
+        - name: loki-grafana # Internal service which is publishing pod
+          port: 80
+    - match: Host(`grafana.local.anundsson.net`)
+      kind: Rule
+      services:
+        - name: loki-grafana # Internal service which is publishing pod
+          port: 80
+      middlewares:
+        - name: default-headers
+          namespace: default
+  tls:
+    secretName: local-anundsson-net-staging-tls

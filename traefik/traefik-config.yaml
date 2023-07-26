@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-credentials
+  namespace: traefik
+
+type: Opaque
+stringData:
+  email: andre.anundsson@gmail.com
+  apiKey: c961ec17b0ba15c5d13a049a26af27fe19c98
