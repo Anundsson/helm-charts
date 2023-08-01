@@ -1,0 +1,30 @@
+{{- if .Values.ingressRoute.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-ingressroute
+  annotations:
+    {{- toYaml .Values.ingressRoute.annotations | nindent 4 }}
+  labels: {{- include "longhorn.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    {{- range .Values.ingressRoute.entryPoints }}
+    - {{ . }}
+    {{- end }}
+  routes:
+    {{- range .Values.ingressRoute.matchRules }}
+    - match: Host(`{{ .host }}`)
+      kind: {{ .kind }}
+      services:
+        - name: {{ .serviceName }}
+          port: {{ .servicePort }}
+      {{- with $.Values.ingressRoute.middlewares }}
+      middlewares:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
+  {{- with .Values.ingressRoute.tls }}
+  tls:
+    secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
