@@ -289,17 +289,17 @@ ingressRoute:
   matchRules:
     - host: www.longhorn.local.anundsson.net
       kind: Rule
-      serviceName: longhorn
-      servicePort: 8200
+      serviceName: longhorn-frontend
+      servicePort: 80
     - host: longhorn.local.anundsson.net
       kind: Rule
-      serviceName: longhorn
-      servicePort: 8200
+      serviceName: longhorn-frontend
+      servicePort: 80
   middlewares:
     - name: default-headers
       namespace: default
   tls:
-    secretName: local-anundsson-net-staging-tls
+    secretName: local-anundsson-net-production-tls
 
 
 #  For Kubernetes < v1.25, if your cluster enables Pod Security Policy admission controller,
