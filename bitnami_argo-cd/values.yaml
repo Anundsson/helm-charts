@@ -1817,6 +1817,30 @@ server:
     ##
     extraRules: []
 
+  # IngressRoute allows traefik to act as reverse proxy to allow external access
+  # from Kubernetes to access Vault pods.
+  # In order to expose the service, use the route section below
+  ingressRoute:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik-external
+    entryPoints:
+      - websecure
+    matchRules:
+      - host: www.argocd.local.anundsson.net
+        kind: Rule
+        serviceName: argocd-argo-cd-server
+        servicePort: 443
+      - host: argocd.local.anundsson.net
+        kind: Rule
+        serviceName: argocd-argo-cd-server
+        servicePort: 443
+    middlewares:
+      - name: default-headers
+        namespace: default
+    tls:
+      secretName: local-anundsson-net-staging-tls
+
   ## Metrics configuration for Argo CD server
   ##
   metrics:

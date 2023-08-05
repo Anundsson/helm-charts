@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: local-anundsson-net
+  name: local-anundsson-net-production
   namespace: default
 spec:
-  secretName: local-anundsson-net-staging-tls
+  secretName: local-anundsson-net-production-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "*.local.anundsson.net"
   dnsNames:
