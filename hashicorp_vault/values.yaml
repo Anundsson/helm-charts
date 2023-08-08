@@ -454,17 +454,17 @@ server:
     matchRules:
       - host: www.vault.local.anundsson.net
         kind: Rule
-        serviceName: vault
+        serviceName: vault-internal
         servicePort: 8200
       - host: vault.local.anundsson.net
         kind: Rule
-        serviceName: vault
+        serviceName: vault-internal
         servicePort: 8200
     middlewares:
       - name: default-headers
         namespace: default
     tls:
-      secretName: local-anundsson-net-staging-tls
+      secretName: local-anundsson-net-production-tls
 
   # OpenShift only - create a route to expose the service
   # By default the created route will be of type passthrough
