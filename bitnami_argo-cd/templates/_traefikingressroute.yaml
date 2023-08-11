@@ -1,0 +1,35 @@
+{{- if .Values.server.ingressRoute.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-ingressroute
+  annotations:
+    {{- toYaml .Values.server.ingressRoute.annotations | nindent 4 }}
+spec:
+  entryPoints:
+    {{- range .Values.server.ingressRoute.entryPoints }}
+    - {{ . }}
+    {{- end }}
+  routes:
+    {{- range .Values.server.ingressRoute.matchRules }}
+    - match: Host(`{{ .host }}`){{- if .match }} && {{ .match }}{{- end }}
+      kind: {{ .kind }}
+      priority: {{ .priority }}
+      services:
+        {{- range .services }}
+        - name: {{ .name }}
+          port: {{ .port }}
+          {{- with .scheme }}
+          scheme: {{ . }}
+          {{- end }}
+        {{- end }}
+      {{- with $.Values.server.ingressRoute.middlewares }}
+      middlewares:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
+  {{- with .Values.server.ingressRoute.tls }}
+  tls:
+    secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}

@@ -3,7 +3,7 @@ globalArguments:
   - "--global.sendanonymoususage=false"
   - "--global.checknewversion=false"
 additionalArguments:
- # - "--providers.kubernetescrd.allowCrossNamespace=true"
+  - "--providers.kubernetescrd.allowCrossNamespace=true"
   - "--serversTransport.insecureSkipVerify=true"
   - "--log.level=DEBUG"
 deployment:
